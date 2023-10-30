@@ -1,0 +1,53 @@
+INSERT INTO statuses (id, name_status, order_num, user_id) VALUES ('50277892-f860-4cb6-a126-46b99435d83b', 'ВИШЛИСТ', 0, 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO statuses (id, name_status, order_num, user_id) VALUES ('74616441-36f9-4de4-9bd8-e3e8276ffed4', 'ОТКАЗЫ', 4, 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO statuses (id, name_status, order_num, user_id) VALUES ('6af7f8dd-27d9-4a77-b020-f07697b6ca0e', 'ОТКЛИК', 1, 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO statuses (id, name_status, order_num, user_id) VALUES ('315c79fd-0482-4817-8dcb-83979557204c', 'ИНТЕРВЬЮ', 2, 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO statuses (id, name_status, order_num, user_id) VALUES ('6f07bb54-e919-4195-bb5d-c96070bab0de', 'ПРЕДЛОЖЕНИЯ', 3, 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO vacancies (id, company, name_vacancy, notes, salary, status_id, user_id) VALUES ('4618b5ff-809f-4876-bc0f-58460483c975', 'ООО Промэкспертиза', 'Backend Node js Developer', 'Ключевые навыки: Node.js PostgreSQL JavaScript SQL TypeScript Nest.js', 230000, '50277892-f860-4cb6-a126-46b99435d83b', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO vacancies (id, company, name_vacancy, notes, salary, status_id, user_id) VALUES ('dfec9271-a6ef-4c40-9ef1-de6081263a60', 'ООО Энкри', 'Java-программист', 'Ключевые навыки: Hibernate ORM PostgreSQL Java Git Java Servlets', 220000, '50277892-f860-4cb6-a126-46b99435d83b', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO vacancies (id, company, name_vacancy, notes, salary, status_id, user_id) VALUES ('fd77988f-3eda-46a5-84bb-eac018c97b15', 'Aviasales', 'Backend Разработчик', 'Ключевые навыки: Agile Project Management Scrum Java Core Аналитическое мышление Kanban Quarkus PostgreSQL RabbitMQ', 180000, '6af7f8dd-27d9-4a77-b020-f07697b6ca0e', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO vacancies (id, company, name_vacancy, notes, salary, status_id, user_id) VALUES ('3e7a29e8-876a-4aef-98ff-0b1c374615f6', 'Т1 Консалтинг', 'Java-разработчик', 'Ключевые навыки: Spring Framework PostgreSQL Java', 150000, '315c79fd-0482-4817-8dcb-83979557204c', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO vacancies (id, company, name_vacancy, notes, salary, status_id, user_id) VALUES ('0b705064-e5e4-4eb8-a78f-13aa462db6f2', 'Dsr', 'Backend Node js разработчик', 'Ключевые навыки: Node.js PostgreSQL JavaScript SQL TypeScript Nest.js', 200000, '315c79fd-0482-4817-8dcb-83979557204c', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO vacancies (id, company, name_vacancy, notes, salary, status_id, user_id) VALUES ('7b331f11-0117-4413-92cd-0d238fbe5025', 'ООО ФРЕГАТ', 'Backend Developer', 'Ключевые навыки: Agile Project Management Scrum .NET Core Аналитическое мышление Kanban С# PostgreSQL RabbitMQ', 150000, '6af7f8dd-27d9-4a77-b020-f07697b6ca0e', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO vacancies (id, company, name_vacancy, notes, salary, status_id, user_id) VALUES ('37b534ef-0faa-4cdd-97b4-17f62eb9720a', 'ООО  «ОФИСМАГ»', 'Системный администратор Linux (DevOps engineer)', 'Ключевые навыки Английский — A1 — Начальный Администрирование серверов Linux Linux Docker Высшее образование Настройка VPS/VDS серверов Zabbix Jenkins Gitlab CI Умение работать в коллективе Gitlab Мониторинг Infrastructure as Code ELK Graylog', 170000, '6f07bb54-e919-4195-bb5d-c96070bab0de', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO vacancies (id, company, name_vacancy, notes, salary, status_id, user_id) VALUES ('a82726ea-c2dc-4710-a015-73f7918f8fa6', 'Mintrocket', 'Android developer (Kotlin)', 'Ключевые навыки: Kotlin Git Android Android SDK Clean Architecture', 220000, '6f07bb54-e919-4195-bb5d-c96070bab0de', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO vacancies (id, company, name_vacancy, notes, salary, status_id, user_id) VALUES ('39b4f92a-ea5a-414f-ba68-e5518aee3f1d', 'Surf', 'Middle Back-end разработчик/Team Lead', 'Ключевые навыки: Java Kotlin Postgres Spring Boot REST SQL Angular Docker Английский язык', 250000, '74616441-36f9-4de4-9bd8-e3e8276ffed4', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO vacancies (id, company, name_vacancy, notes, salary, status_id, user_id) VALUES ('a8b4df90-ce8f-4099-a7b7-b3d5a074c54d', 'Devexperts', 'Middle Java Developer', '', 250000, '74616441-36f9-4de4-9bd8-e3e8276ffed4', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO vacancies (id, company, name_vacancy, notes, salary, status_id, user_id) VALUES ('44b5f44a-ea7a-545f-ba44-e4444aee5f7d', 'Surf', 'DevOps', 'Ключевые навыки: Java Kotlin Postgres Spring Boot REST SQL Angular Docker Английский язык kuber helm', 290000, '74616441-36f9-4de4-9bd8-e3e8276ffed4', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO contacts (id, company, name, mail, notes, telephone, user_id) VALUES ('9b915e08-2695-4171-a828-b5a87838b8a9', 'Surf', 'Федотова', 'surf@gmail.com', '', '+7 (923) 600-4247', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO contacts (id, company, name, mail, notes, telephone, user_id) VALUES ('1b194e03-3333-4543-a333-b9a12876b1a7', 'Surf', 'Щукин', 'surShuk@gmail.com', '', '+7 (910) 358-4342', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO contacts (id, company, name, mail, notes, telephone, user_id) VALUES ('afbbd8d8-18bd-4e9e-ae70-ededdbd689df', 'Mintrocket', 'Тихонов', 'mintrocket@gmail.com', '', '+7 (995) 500-9824', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO contacts (id, company, name, mail, notes, telephone, user_id) VALUES ('1b32db82-d27e-4fb7-a427-8c7e67de0385', 'Devexperts', 'Корнилов', 'devexperts@gmail.com', '', '+7 (933) 857-9011', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO contacts (id, company, name, mail, notes, telephone, user_id) VALUES ('35a7417b-68eb-4cf1-a370-b7a8f5e81156', 'ООО ФРЕГАТ', 'Петров', 'fregat@gmail.com', '', '+7 (925) 703-2462', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO contacts (id, company, name, mail, notes, telephone, user_id) VALUES ('7a82b060-287c-4c0e-99ac-6629ea81d71e', 'ООО Промэкспертиза', 'Самойлов', 'prom@gmail.com', '', '+7 (914) 933-3143', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO contacts (id, company, name, mail, notes, telephone, user_id) VALUES ('e6827207-176f-46c1-b6e3-ef2cb0bce43f', 'ООО Энкри', 'Ларионов', 'enkry@gmail.com', '', '+7 (911) 908-0154', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO contacts (id, company, name, mail, notes, telephone, user_id) VALUES ('78b61015-2f85-4944-b49d-af4b2122ad03', 'Aviasales', 'Тихонов', 'aviasales@gmail.com', '', '+7 (938) 430-9392', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO contacts (id, company, name, mail, notes, telephone, user_id) VALUES ('aa8409ee-cba6-4af7-8158-e98f8dc72929', 'Т1 Консалтинг', 'Ефремова', 't1cons@gmail.com', '', '+7 (961) 051-6737', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO contacts (id, company, name, mail, notes, telephone, user_id) VALUES ('87577898-c06d-4e83-ab63-96bc2064ad46', 'Dsr', 'Семёнова', 'dsr@gmail.com', '', '+7 (929) 155-6709', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO contacts (id, company, name, mail, notes, telephone, user_id) VALUES ('893e8923-54b9-4171-a538-82f1f577958c', 'ООО  «ОФИСМАГ»', 'Мухина', 'officemag@gmail.com', '', '+7 (926) 856-1700', 'fba9b929-a765-4e43-bb61-5c3bb47c5084');
+INSERT INTO events (id, begin_date,is_completed, notes, user_id, vacancy_id) VALUES ('8e52c8e0-f393-435d-abcf-08fc49e14fff', '2022-06-02 09:00:00.000000 +00:00', false, 'Собеседование Dsr', 'fba9b929-a765-4e43-bb61-5c3bb47c5084', '0b705064-e5e4-4eb8-a78f-13aa462db6f2');
+INSERT INTO events (id, begin_date, is_completed, notes, user_id, vacancy_id) VALUES ('68433486-d24c-4c6a-9fed-0779ac963d79', '2022-05-30 15:00:00.000000 +00:00', true, 'Просмотреть материал по Nest.js', 'fba9b929-a765-4e43-bb61-5c3bb47c5084', '0b705064-e5e4-4eb8-a78f-13aa462db6f2');
+INSERT INTO events (id, begin_date, is_completed, notes, user_id, vacancy_id) VALUES ('ac3aed48-71bc-4852-b742-1565b461b94f', '2022-06-03 11:00:00.000000 +00:00', false, 'Собеседование T1 Консалтинг', 'fba9b929-a765-4e43-bb61-5c3bb47c5084', '3e7a29e8-876a-4aef-98ff-0b1c374615f6');
+INSERT INTO vacancies_contacts(vacancy_id, contact_id) VALUES ('4618b5ff-809f-4876-bc0f-58460483c975', '7a82b060-287c-4c0e-99ac-6629ea81d71e');
+INSERT INTO vacancies_contacts(vacancy_id, contact_id) VALUES ('39b4f92a-ea5a-414f-ba68-e5518aee3f1d', '9b915e08-2695-4171-a828-b5a87838b8a9');
+INSERT INTO vacancies_contacts(vacancy_id, contact_id) VALUES ('a82726ea-c2dc-4710-a015-73f7918f8fa6', 'afbbd8d8-18bd-4e9e-ae70-ededdbd689df');
+INSERT INTO vacancies_contacts(vacancy_id, contact_id) VALUES ('a8b4df90-ce8f-4099-a7b7-b3d5a074c54d', '1b32db82-d27e-4fb7-a427-8c7e67de0385');
+INSERT INTO vacancies_contacts(vacancy_id, contact_id) VALUES ('7b331f11-0117-4413-92cd-0d238fbe5025', '35a7417b-68eb-4cf1-a370-b7a8f5e81156');
+INSERT INTO vacancies_contacts(vacancy_id, contact_id) VALUES ('dfec9271-a6ef-4c40-9ef1-de6081263a60', 'e6827207-176f-46c1-b6e3-ef2cb0bce43f');
+INSERT INTO vacancies_contacts(vacancy_id, contact_id) VALUES ('fd77988f-3eda-46a5-84bb-eac018c97b15', '78b61015-2f85-4944-b49d-af4b2122ad03');
+INSERT INTO vacancies_contacts(vacancy_id, contact_id) VALUES ('3e7a29e8-876a-4aef-98ff-0b1c374615f6', 'aa8409ee-cba6-4af7-8158-e98f8dc72929');
+INSERT INTO vacancies_contacts(vacancy_id, contact_id) VALUES ('0b705064-e5e4-4eb8-a78f-13aa462db6f2', '87577898-c06d-4e83-ab63-96bc2064ad46');
+INSERT INTO vacancies_contacts(vacancy_id, contact_id) VALUES ('37b534ef-0faa-4cdd-97b4-17f62eb9720a', '893e8923-54b9-4171-a538-82f1f577958c');
+INSERT INTO vacancies_contacts(vacancy_id, contact_id) VALUES ('44b5f44a-ea7a-545f-ba44-e4444aee5f7d', '9b915e08-2695-4171-a828-b5a87838b8a9');
+INSERT INTO vacancies_contacts(vacancy_id, contact_id) VALUES ('44b5f44a-ea7a-545f-ba44-e4444aee5f7d', '1b194e03-3333-4543-a333-b9a12876b1a7');
+INSERT INTO vacancies_contacts(vacancy_id, contact_id) VALUES ('39b4f92a-ea5a-414f-ba68-e5518aee3f1d', '1b194e03-3333-4543-a333-b9a12876b1a7');
+
+
+
+
+
+
+
+
+
+

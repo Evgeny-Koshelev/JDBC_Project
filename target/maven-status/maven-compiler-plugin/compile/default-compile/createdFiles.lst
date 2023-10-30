@@ -1,0 +1,16 @@
+org\example\servlet\VacancyAndContactServlet.class
+org\example\repository\mapper\VacancyAndContactResultSetMapperImpl.class
+org\example\repository\impl\StatusRepositoryImpl.class
+org\example\service\impl\VacancyAndContactServiceImpl.class
+org\example\repository\mapper\StatusResultSetMapperImpl.class
+org\example\servlet\dto\VacancyAndContactDto.class
+org\example\repository\impl\ContactRepositoryImpl.class
+org\example\repository\ContactRepository.class
+org\example\repository\impl\VacancyAndContactRepositoryImpl.class
+org\example\service\impl\ContactServiceImpl.class
+org\example\repository\StatusRepository.class
+org\example\service\impl\StatusServiceImpl.class
+org\example\model\VacancyAndContact.class
+org\example\servlet\mapper\VacancyAndContactDtoMapperImpl.class
+org\example\repository\mapper\ContactResultSetMapperImpl.class
+org\example\repository\VacancyAndContactRepository.class
