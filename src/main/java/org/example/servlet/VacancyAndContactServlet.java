@@ -2,6 +2,7 @@ package org.example.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.model.VacancyAndContact;
+import org.example.repository.impl.VacancyAndContactRepositoryImpl;
 import org.example.service.impl.VacancyAndContactServiceImpl;
 import org.example.servlet.dto.VacancyAndContactDto;
 import org.example.servlet.mapper.VacancyAndContactDtoMapperImpl;
@@ -19,14 +20,20 @@ import java.util.UUID;
 @WebServlet(name = "vacancyAndContactServlet", value = "/vacAndCon")
 public class VacancyAndContactServlet  extends HttpServlet {
 
-    private final VacancyAndContactServiceImpl service = new VacancyAndContactServiceImpl();
+    private final VacancyAndContactServiceImpl service;
     private final VacancyAndContactDtoMapperImpl vacancyAndContactDtoMapper = new VacancyAndContactDtoMapperImpl();
     private static final String CONTENT_TYPE = "application/json; charset=utf-8";
     private static final String VACANCY_ID = "vacancyId";
     private static final String CONTACT_ID = "contactId";
+
+    public VacancyAndContactServlet(VacancyAndContactServiceImpl vacancyAndContactService){
+        service = vacancyAndContactService;
+    }
+    public VacancyAndContactServlet() {
+        service = new VacancyAndContactServiceImpl(new VacancyAndContactRepositoryImpl());
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType(CONTENT_TYPE);
         ObjectMapper objectMapper = new ObjectMapper();
         String vacancyIdStr = req.getParameter(VACANCY_ID);
         String contactIdStr = req.getParameter(CONTACT_ID);
@@ -35,7 +42,6 @@ public class VacancyAndContactServlet  extends HttpServlet {
             UUID vacancyId = UUID.fromString(vacancyIdStr);
             UUID contactId = UUID.fromString(contactIdStr);
             VacancyAndContact vacancyAndContact = service.findById(vacancyId,contactId);
-            PrintWriter pw = resp.getWriter();
             if(vacancyAndContact!=null) {
                 VacancyAndContactDto vacancyAndContactDto = vacancyAndContactDtoMapper.toDto(vacancyAndContact);
                 json = objectMapper.writeValueAsString(vacancyAndContactDto);
@@ -47,7 +53,11 @@ public class VacancyAndContactServlet  extends HttpServlet {
 
 
             }
-            pw.write(json);
+            if(resp.getWriter()!=null) {
+                resp.setContentType(CONTENT_TYPE);
+                PrintWriter pw = resp.getWriter();
+                pw.write(json);
+            }
         }
         else
             getAll(resp, objectMapper);
@@ -65,9 +75,11 @@ public class VacancyAndContactServlet  extends HttpServlet {
             resp.setStatus(404);
             json = objectMapper.writeValueAsString("Such object don't found");
         }
-        resp.setContentType(CONTENT_TYPE);
-        PrintWriter pw= resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+            resp.setContentType(CONTENT_TYPE);
+            PrintWriter pw = resp.getWriter();
+            pw.write(json);
+        }
     }
 
 
@@ -81,9 +93,11 @@ public class VacancyAndContactServlet  extends HttpServlet {
         VacancyAndContactDto vacancyAndContactDtoOut = vacancyAndContactDtoMapper.toDto(saved);
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(vacancyAndContactDtoOut);
-        resp.setContentType(CONTENT_TYPE);
-        PrintWriter pw= resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+            resp.setContentType(CONTENT_TYPE);
+            PrintWriter pw = resp.getWriter();
+            pw.write(json);
+        }
     }
 
     protected void getAll(HttpServletResponse resp, ObjectMapper objectMapper)
@@ -102,8 +116,11 @@ public class VacancyAndContactServlet  extends HttpServlet {
             resp.setStatus(404);
             json = objectMapper.writeValueAsString("List is empty");
         }
-        PrintWriter pw= resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+            resp.setContentType(CONTENT_TYPE);
+            PrintWriter pw = resp.getWriter();
+            pw.write(json);
+        }
     }
 
 }

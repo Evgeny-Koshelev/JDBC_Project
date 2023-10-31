@@ -3,7 +3,7 @@ package org.example.service.impl;
 import org.example.model.Contact;
 import org.example.model.Event;
 import org.example.model.Vacancy;
-import org.junit.jupiter.api.Assertions;
+import org.example.repository.impl.VacancyRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -13,8 +13,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 
 class VacancyServiceImplTest {
@@ -23,7 +22,7 @@ class VacancyServiceImplTest {
 
     @Test
     void findByIdTest() {
-        VacancyServiceImpl simpleServiceMock = Mockito.mock();
+        VacancyRepositoryImpl simpleServiceMock = Mockito.mock();
         Vacancy vacancy = new Vacancy();
         UUID id = UUID.randomUUID();
         vacancy.setId(id);
@@ -55,11 +54,14 @@ class VacancyServiceImplTest {
         vacancy.setEvents(events);
         vacancy.setContacts(contacts);
         Mockito.when(simpleServiceMock.findById(id)).thenReturn(vacancy);
-        Assertions.assertEquals(vacancy, simpleServiceMock.findById(id));
+
+        Vacancy check = simpleServiceMock.findById(id);
+        VacancyServiceImpl vacancyService = new VacancyServiceImpl(simpleServiceMock);
+        assertEquals(check, vacancyService.findById(id));
     }
     @Test
     void saveTest() {
-        VacancyServiceImpl simpleServiceMock = Mockito.mock();
+        VacancyRepositoryImpl simpleServiceMock = Mockito.mock();
         Vacancy vacancy = new Vacancy();
         UUID id = UUID.randomUUID();
         vacancy.setId(id);
@@ -70,9 +72,13 @@ class VacancyServiceImplTest {
         vacancy.setSalary(100000);
         vacancy.setStatusId(UUID.fromString("315c79fd-0482-4817-8dcb-83979557204c"));
         Mockito.when(simpleServiceMock.save(vacancy)).thenReturn(vacancy);
-        Assertions.assertEquals(vacancy, simpleServiceMock.save(vacancy));
+
+        Vacancy check = simpleServiceMock.save(vacancy);
+        VacancyServiceImpl vacancyService = new VacancyServiceImpl(simpleServiceMock);
+        assertEquals(check, vacancyService.save(vacancy));
+
         ArgumentCaptor<Vacancy> requestCaptor = ArgumentCaptor.forClass(Vacancy.class);
-        Mockito.verify(simpleServiceMock, times(1)).save(requestCaptor.capture());
+        Mockito.verify(simpleServiceMock, times(2)).save(requestCaptor.capture());
         Vacancy capturedArgument = requestCaptor.getValue();
         assertNotNull(capturedArgument.getId());
         assertNotNull(capturedArgument.getUserId());
@@ -82,15 +88,18 @@ class VacancyServiceImplTest {
 
     @Test
     void deleteTest() {
-        VacancyServiceImpl simpleServiceMock = Mockito.mock();
+        VacancyRepositoryImpl simpleServiceMock = Mockito.mock();
         UUID id = UUID.randomUUID();
-        Mockito.when(simpleServiceMock.delete(id)).thenReturn(true);
-        Assertions.assertEquals(true, simpleServiceMock.delete(id));
+        Mockito.when(simpleServiceMock.deleteById(id)).thenReturn(true);
+
+        boolean check = simpleServiceMock.deleteById(id);
+        VacancyServiceImpl vacancyService = new VacancyServiceImpl(simpleServiceMock);
+        assertEquals(check, vacancyService.delete(id));
     }
 
     @Test
     void findAll() {
-        VacancyServiceImpl simpleServiceMock = Mockito.mock();
+        VacancyRepositoryImpl simpleServiceMock = Mockito.mock();
         List<Vacancy> vacancyList = new ArrayList<>();
         Vacancy vacancy = new Vacancy();
         UUID id = UUID.randomUUID();
@@ -156,6 +165,9 @@ class VacancyServiceImplTest {
         vacancy2.setContacts(contacts2);
         vacancyList.add(vacancy2);
         Mockito.when(simpleServiceMock.findAll()).thenReturn(vacancyList);
-        Assertions.assertEquals(vacancyList, simpleServiceMock.findAll());
+
+        List<Vacancy> check = simpleServiceMock.findAll();
+        VacancyServiceImpl vacancyService = new VacancyServiceImpl(simpleServiceMock);
+        assertEquals(check, vacancyService.findAll());
     }
 }

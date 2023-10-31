@@ -3,6 +3,7 @@ package org.example.servlet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.example.model.Status;
+import org.example.repository.impl.StatusRepositoryImpl;
 import org.example.service.impl.StatusServiceImpl;
 import org.example.servlet.dto.StatusDto;
 import org.example.servlet.mapper.StatusDtoMapperImpl;
@@ -21,9 +22,18 @@ import java.util.UUID;
 @WebServlet(name = "statusServlet", value = "/status")
 public class StatusServlet extends HttpServlet {
 
-    private final StatusServiceImpl service = new StatusServiceImpl();
+    private final StatusServiceImpl service;
 
     private  final StatusDtoMapperImpl statusDtoMapper = new StatusDtoMapperImpl();
+
+    public StatusServlet(StatusServiceImpl statusService) {
+        service = statusService;
+    }
+
+    public StatusServlet() {
+        service = new StatusServiceImpl(new StatusRepositoryImpl());
+
+    }
 
     private static final String CONTENT_TYPE = "application/json; charset=utf-8";
 
@@ -34,12 +44,10 @@ public class StatusServlet extends HttpServlet {
         resp.setContentType(CONTENT_TYPE);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.setDateFormat(new SimpleDateFormat(DATE_TYPE));
         String json;
         if(req.getParameter("id") != null) {
             UUID uuid = UUID.fromString(req.getParameter("id"));
             Status status = service.findById(uuid);
-            PrintWriter pw = resp.getWriter();
             if(status!=null) {
                 StatusDto statusDto = statusDtoMapper.toDto(status);
                 json = objectMapper.writeValueAsString(statusDto);
@@ -51,7 +59,11 @@ public class StatusServlet extends HttpServlet {
 
 
             }
-            pw.write(json);
+            if(resp.getWriter()!=null) {
+                resp.setContentType(CONTENT_TYPE);
+                PrintWriter pw = resp.getWriter();
+                pw.write(json);
+            }
         }
         else
             getAll(resp, objectMapper);
@@ -63,7 +75,6 @@ public class StatusServlet extends HttpServlet {
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.setDateFormat(new SimpleDateFormat(DATE_TYPE));
         String json;
-        resp.setContentType(CONTENT_TYPE);
         if(req.getParameter("nameStatus")!=null && req.getParameter("orderNum")!=null ) {
             StatusDto statusDtoIn = new StatusDto();
             UUID id = UUID.randomUUID();
@@ -80,9 +91,11 @@ public class StatusServlet extends HttpServlet {
             resp.setStatus(404);
             json = objectMapper.writeValueAsString("nameStatus or orderNum is empty");
         }
-
-        PrintWriter pw = resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+            resp.setContentType(CONTENT_TYPE);
+            PrintWriter pw = resp.getWriter();
+            pw.write(json);
+        }
     }
 
     @Override
@@ -96,9 +109,11 @@ public class StatusServlet extends HttpServlet {
             resp.setStatus(404);
             json = objectMapper.writeValueAsString("Such id don't found");
         }
-        resp.setContentType(CONTENT_TYPE);
-        PrintWriter pw= resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+            resp.setContentType(CONTENT_TYPE);
+            PrintWriter pw = resp.getWriter();
+            pw.write(json);
+        }
     }
 
     protected void getAll(HttpServletResponse resp, ObjectMapper objectMapper)
@@ -116,7 +131,10 @@ public class StatusServlet extends HttpServlet {
             resp.setStatus(404);
             json = objectMapper.writeValueAsString("List is empty");
         }
-        PrintWriter pw= resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+            resp.setContentType(CONTENT_TYPE);
+            PrintWriter pw = resp.getWriter();
+            pw.write(json);
+        }
     }
 }

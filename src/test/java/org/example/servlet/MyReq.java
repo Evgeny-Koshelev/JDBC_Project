@@ -1,17 +1,61 @@
 package org.example.servlet;
 
+import org.example.model.Event;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class MyReq implements HttpServletRequest {
+
+    private final UUID id;
+
+
+    private  UUID contactId;
+    private String name;
+
+    private String str;
+
+
+    private Event event;
+    public MyReq(UUID id) {
+        this.id = id;
+    }
+    public MyReq() {
+        id = null;
+
+    }
+
+    public MyReq(String name) {
+        this.name = name;
+        id = null;
+
+    }
+
+    public MyReq( String notes, String date, UUID id) {
+        this.name = notes;
+        this.str = date;
+        this.id = id;
+
+    }
+
+    public MyReq( String notes, String str) {
+        this.name = notes;
+        this.str = str;
+        this.id = null;
+
+    }
+
+    public MyReq( UUID vacancyId, UUID contactId ) {
+        this.id = vacancyId;
+        this.contactId = contactId;
+
+    }
+
     @Override
     public String getAuthType() {
         return null;
@@ -214,7 +258,32 @@ public class MyReq implements HttpServletRequest {
 
     @Override
     public String getParameter(String s) {
-        return null;
+        switch (s) {
+            case("id"),("vacancyId"),("statusId"): {
+                if (id != null)
+                    return id.toString();
+                else
+                    return null;
+            }
+
+            case("name" ), ("notes"),("nameStatus"): {
+                return name;
+
+            }
+
+            case("beginDate"), ("nameVacancy"),("orderNum"):
+                return str;
+            case("salary"):
+                return "100000";
+            case("contactId"):{
+                if(contactId!=null)
+                    return contactId.toString();
+                else return null;
+            }
+
+        }
+
+        return s;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package org.example.service.impl;
 
 import org.example.model.Event;
-import org.example.repository.EventRepository;
 import org.example.repository.impl.EventRepositoryImpl;
 import org.example.service.SimpleService;
 
@@ -10,9 +9,14 @@ import java.util.UUID;
 
 public class EventServiceImpl implements SimpleService<Event> {
 
-    private final EventRepository eventRepository = new EventRepositoryImpl();
+    private final EventRepositoryImpl eventRepository;
+
+    public EventServiceImpl (EventRepositoryImpl eventRepository) {
+        this. eventRepository = eventRepository;
+    }
     @Override
-    public Event save(Event event) { return eventRepository.save(event); }
+    public Event save(Event event) {
+        return eventRepository.save(event); }
 
     @Override
     public Event findById(UUID uuid) {

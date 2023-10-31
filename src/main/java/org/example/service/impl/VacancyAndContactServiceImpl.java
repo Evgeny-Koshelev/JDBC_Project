@@ -1,6 +1,7 @@
 package org.example.service.impl;
 
 import org.example.model.VacancyAndContact;
+import org.example.repository.VacancyAndContactRepository;
 import org.example.repository.impl.VacancyAndContactRepositoryImpl;
 import org.example.service.SimpleService;
 
@@ -8,7 +9,11 @@ import java.util.List;
 import java.util.UUID;
 
 public class VacancyAndContactServiceImpl implements SimpleService<VacancyAndContact> {
-    private final VacancyAndContactRepositoryImpl vacancyAndContactRepository = new VacancyAndContactRepositoryImpl();
+    private final VacancyAndContactRepositoryImpl vacancyAndContactRepository;
+
+    public VacancyAndContactServiceImpl(VacancyAndContactRepositoryImpl vacancyAndContactRepository) {
+        this.vacancyAndContactRepository = vacancyAndContactRepository;
+    }
     @Override
     public VacancyAndContact save(VacancyAndContact vacancyAndContact) { return vacancyAndContactRepository.save(vacancyAndContact); }
 

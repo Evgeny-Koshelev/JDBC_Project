@@ -3,6 +3,7 @@ package org.example.servlet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.example.model.Contact;
+import org.example.repository.impl.ContactRepositoryImpl;
 import org.example.service.impl.ContactServiceImpl;
 import org.example.servlet.dto.ContactDto;
 import org.example.servlet.mapper.ContactDtoMapperImpl;
@@ -21,14 +22,20 @@ import java.util.UUID;
 @WebServlet(name = "contactServlet", value = "/contact")
 public class ContactServlet extends HttpServlet {
 
-    private final ContactServiceImpl service = new ContactServiceImpl();
     private final ContactDtoMapperImpl contactDtoMapper = new ContactDtoMapperImpl();
     private static final String CONTENT_TYPE = "application/json; charset=utf-8";
     private static final String DATE_TYPE = "yyyy-MM-dd HH:mm:ssXXX";
+    private final ContactServiceImpl service;
 
+    public ContactServlet(ContactServiceImpl contactService) {
+        service = contactService;
+    }
+
+    ContactServlet(){
+        service = new ContactServiceImpl(new ContactRepositoryImpl());
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType(CONTENT_TYPE);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.setDateFormat(new SimpleDateFormat(DATE_TYPE));
@@ -36,7 +43,6 @@ public class ContactServlet extends HttpServlet {
         if(req.getParameter("id") != null) {
             UUID uuid = UUID.fromString(req.getParameter("id"));
             Contact contact = service.findById(uuid);
-            PrintWriter pw = resp.getWriter();
             if(contact!=null) {
                 ContactDto contactDto = contactDtoMapper.toDto(contact);
                 json = objectMapper.writeValueAsString(contactDto);
@@ -48,7 +54,11 @@ public class ContactServlet extends HttpServlet {
 
 
             }
-            pw.write(json);
+            if(resp.getWriter()!=null) {
+                resp.setContentType(CONTENT_TYPE);
+                PrintWriter pw = resp.getWriter();
+                pw.write(json);
+            }
         }
         else
             getAll(resp, objectMapper);
@@ -81,14 +91,22 @@ public class ContactServlet extends HttpServlet {
             resp.setStatus(404);
             json = objectMapper.writeValueAsString("Name is empty");
         }
-        resp.setContentType(CONTENT_TYPE);
-        PrintWriter pw = resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+            resp.setContentType(CONTENT_TYPE);
+            PrintWriter pw= resp.getWriter();
+            pw.write(json);
+        }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        boolean isDeleted = service.delete(UUID.fromString(req.getParameter("id")));
+        UUID id;
+        String str= req.getParameter("id");
+        if(str == null)
+            id = UUID.randomUUID();
+        else
+            id = UUID.fromString(req.getParameter("id"));
+        boolean isDeleted = service.delete(id);
         ObjectMapper objectMapper = new ObjectMapper();
         String json;
         if(isDeleted)
@@ -97,9 +115,12 @@ public class ContactServlet extends HttpServlet {
             resp.setStatus(404);
             json = objectMapper.writeValueAsString("Such id don't found");
         }
-        resp.setContentType(CONTENT_TYPE);
-        PrintWriter pw= resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+            resp.setContentType(CONTENT_TYPE);
+            PrintWriter pw= resp.getWriter();
+            pw.write(json);
+        }
+
     }
 
     protected void getAll(HttpServletResponse resp, ObjectMapper objectMapper)
@@ -118,7 +139,10 @@ public class ContactServlet extends HttpServlet {
             resp.setStatus(404);
             json = objectMapper.writeValueAsString("List is empty");
         }
-        PrintWriter pw= resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+
+            PrintWriter pw= resp.getWriter();
+            pw.write(json);
+        }
     }
 }

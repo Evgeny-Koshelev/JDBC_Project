@@ -3,7 +3,7 @@ package org.example.service.impl;
 import org.example.model.Contact;
 import org.example.model.Event;
 import org.example.model.Vacancy;
-import org.junit.jupiter.api.Assertions;
+import org.example.repository.impl.ContactRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -13,8 +13,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 
 class ContactServiceImplTest {
@@ -23,7 +22,7 @@ class ContactServiceImplTest {
 
     @Test
     void findByIdTest() {
-        ContactServiceImpl simpleServiceMock = Mockito.mock();
+        ContactRepositoryImpl simpleServiceMock = Mockito.mock();
         Contact contact = new Contact();
         contact.setId(UUID.randomUUID());
         contact.setUserId("fba9b929-a765-4e43-bb61-5c3bb47c5084");
@@ -55,11 +54,13 @@ class ContactServiceImplTest {
         contact.setVacancies(vacancies);
 
         Mockito.when(simpleServiceMock.findById(contact.getId())).thenReturn(contact);
-        Assertions.assertEquals(contact, simpleServiceMock.findById(contact.getId()));
+        Contact check = simpleServiceMock.findById(contact.getId());
+        ContactServiceImpl contactService = new ContactServiceImpl(simpleServiceMock);
+        assertEquals(check, contactService.findById(contact.getId()));
     }
     @Test
     void saveTest() {
-        ContactServiceImpl simpleServiceMock = Mockito.mock();
+        ContactRepositoryImpl simpleServiceMock = Mockito.mock();
         Contact contact = new Contact();
         contact.setId(UUID.randomUUID());
         contact.setUserId("fba9b929-a765-4e43-bb61-5c3bb47c5084");
@@ -69,9 +70,13 @@ class ContactServiceImplTest {
         contact.setTelephone("+7 (925) 703-2462");
         contact.setMail("Alex@mail.ru");
         Mockito.when(simpleServiceMock.save(contact)).thenReturn(contact);
-        Assertions.assertEquals(contact, simpleServiceMock.save(contact));
+
+        Contact check = simpleServiceMock.save(contact);
+        ContactServiceImpl contactService = new ContactServiceImpl(simpleServiceMock);
+        assertEquals(check, contactService.save(contact));
+
         ArgumentCaptor<Contact> requestCaptor = ArgumentCaptor.forClass(Contact.class);
-        Mockito.verify(simpleServiceMock, times(1)).save(requestCaptor.capture());
+        Mockito.verify(simpleServiceMock, times(2)).save(requestCaptor.capture());
         Contact capturedArgument = requestCaptor.getValue();
         assertNotNull(capturedArgument.getId());
         assertNotNull(capturedArgument.getUserId());
@@ -81,15 +86,18 @@ class ContactServiceImplTest {
 
     @Test
     void deleteTest() {
-        ContactServiceImpl simpleServiceMock = Mockito.mock();
+        ContactRepositoryImpl simpleServiceMock = Mockito.mock();
         UUID id = UUID.randomUUID();
-        Mockito.when(simpleServiceMock.delete(id)).thenReturn(true);
-        Assertions.assertEquals(true, simpleServiceMock.delete(id));
+        Mockito.when(simpleServiceMock.deleteById(id)).thenReturn(true);
+
+        boolean check = simpleServiceMock.deleteById(id);
+        ContactServiceImpl contactService = new ContactServiceImpl(simpleServiceMock);
+        assertEquals(check, contactService.delete(id));
     }
 
     @Test
     void findAll() {
-        ContactServiceImpl simpleServiceMock = Mockito.mock();
+        ContactRepositoryImpl simpleServiceMock = Mockito.mock();
         List<Contact> contactList = new ArrayList<>();
 
         Contact contact = new Contact();
@@ -161,6 +169,8 @@ class ContactServiceImplTest {
         contactList.add(contact2);
 
         Mockito.when(simpleServiceMock.findAll()).thenReturn(contactList);
-        Assertions.assertEquals(contactList, simpleServiceMock.findAll());
+        List<Contact> check = simpleServiceMock.findAll();
+        ContactServiceImpl contactService = new ContactServiceImpl(simpleServiceMock);
+        assertEquals(check, contactService.findAll());
     }
 }

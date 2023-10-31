@@ -9,7 +9,11 @@ import java.util.List;
 import java.util.UUID;
 
 public class StatusServiceImpl implements SimpleService<Status> {
-    private final StatusRepository statusRepository = new StatusRepositoryImpl();
+    private final StatusRepository statusRepository ;
+
+    public StatusServiceImpl(StatusRepositoryImpl statusRepository) {
+        this.statusRepository = statusRepository;
+    }
     @Override
     public Status save(Status status) {
         return statusRepository.save(status);

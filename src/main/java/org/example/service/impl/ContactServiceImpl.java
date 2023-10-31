@@ -10,7 +10,11 @@ import java.util.UUID;
 
 public class ContactServiceImpl implements SimpleService<Contact> {
 
-    private final ContactRepository contactRepository = new ContactRepositoryImpl();
+    private final ContactRepository contactRepository;
+
+    public ContactServiceImpl(ContactRepositoryImpl contactRepository) {
+        this.contactRepository = contactRepository;
+    }
 
     @Override
     public Contact save(Contact contact) { return contactRepository.save(contact); }

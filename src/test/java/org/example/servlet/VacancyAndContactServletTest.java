@@ -1,57 +1,82 @@
 package org.example.servlet;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.model.VacancyAndContact;
+import org.example.service.impl.VacancyAndContactServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
+import static org.mockito.ArgumentMatchers.any;
 
-public class VacancyAndContactServletTest { //тут я не знаю что проверять, поэтому просто проверил, что методы вызываются несколько раз
+class VacancyAndContactServletTest {
 
     @Test
     void doGetTest() throws IOException {
-        VacancyAndContactServlet servletMock = Mockito.mock();
-        boolean checkLaunch = true;
-        servletMock.doGet(new MyReq(),new MyResp());
-        servletMock.doGet(new MyReq(),new MyResp());
-        servletMock.doGet(new MyReq(),new MyResp());
-        Mockito.verify(servletMock, times(3)).doGet(Mockito.any(), Mockito.any());
-        assertTrue(checkLaunch);
+        VacancyAndContactServiceImpl simpleServiceMock = Mockito.mock();
+        VacancyAndContact vacancyAndContact = new VacancyAndContact();
+        vacancyAndContact.setVacancyId(UUID.randomUUID());
+        vacancyAndContact.setContactId(UUID.randomUUID());
+
+        Mockito.when(simpleServiceMock.findById(vacancyAndContact.getVacancyId(),vacancyAndContact.getContactId())).
+                thenReturn(vacancyAndContact);
+        VacancyAndContactServlet vacancyAndContactServlet = new VacancyAndContactServlet(simpleServiceMock);
+        vacancyAndContactServlet.doGet(new MyReq(vacancyAndContact.getVacancyId(),vacancyAndContact.getContactId()),new MyResp());
+        Mockito.verify(simpleServiceMock).findById(Mockito.any(),Mockito.any());
+        assertTrue(true);
     }
 
     @Test
     void doPostTest() throws IOException {
-        VacancyAndContactServlet servletMock = Mockito.mock();
-        boolean checkLaunch = true;
-        servletMock.doPost(new MyReq(),new MyResp());
-        servletMock.doPost(new MyReq(),new MyResp());
-        servletMock.doPost(new MyReq(),new MyResp());
-        Mockito.verify(servletMock, times(3)).doPost(Mockito.any(), Mockito.any());
-        assertTrue(checkLaunch);
+        VacancyAndContactServiceImpl simpleServiceMock = Mockito.mock();
+        VacancyAndContact vacancyAndContact = new VacancyAndContact();
+        vacancyAndContact.setVacancyId(UUID.randomUUID());
+        vacancyAndContact.setContactId(UUID.randomUUID());
+
+        Mockito.when(simpleServiceMock.save(any())).thenReturn(vacancyAndContact);
+        VacancyAndContactServlet vacancyAndContactServlet = new VacancyAndContactServlet(simpleServiceMock);
+        vacancyAndContactServlet.doPost(new MyReq(vacancyAndContact.getVacancyId(), vacancyAndContact.getContactId()),new MyResp());
+        Mockito.verify(simpleServiceMock).save(Mockito.any());
+        assertTrue(true);
+
     }
 
     @Test
     void getAllTest() throws IOException {
-        VacancyAndContactServlet servletMock = Mockito.mock();
-        boolean checkLaunch = true;
-        servletMock.getAll(new MyResp(),new ObjectMapper());
-        servletMock.getAll(new MyResp(),new ObjectMapper());
-        servletMock.getAll(new MyResp(),new ObjectMapper());
-        Mockito.verify(servletMock, times(3)).getAll(Mockito.any(), Mockito.any());
-        assertTrue(checkLaunch);
+        VacancyAndContactServiceImpl simpleServiceMock = Mockito.mock();
+        List<VacancyAndContact> vacancyAndContactList = new ArrayList<>();
+        VacancyAndContact vacancyAndContact = new VacancyAndContact();
+        vacancyAndContact.setVacancyId(UUID.randomUUID());
+        vacancyAndContact.setContactId(UUID.randomUUID());
+        VacancyAndContact vacancyAndContact2 = new VacancyAndContact();
+        vacancyAndContact2.setVacancyId(UUID.randomUUID());
+        vacancyAndContact2.setContactId(UUID.randomUUID());
+        vacancyAndContactList.add(vacancyAndContact);
+        vacancyAndContactList.add(vacancyAndContact2);
+        Mockito.when(simpleServiceMock.findAll()).thenReturn(vacancyAndContactList);
+
+        VacancyAndContactServlet vacancyAndContactServlet = new VacancyAndContactServlet(simpleServiceMock);
+        vacancyAndContactServlet.doGet(new MyReq(), new MyResp());
+        Mockito.verify(simpleServiceMock).findAll();
+        assertTrue(true);
     }
 
     @Test
     void doDeleteTest() throws IOException {
-        VacancyAndContactServlet servletMock = Mockito.mock();
-        boolean checkLaunch = true;
-        servletMock.doDelete(new MyReq(),new MyResp());
-        servletMock.doDelete(new MyReq(),new MyResp());
-        servletMock.doDelete(new MyReq(),new MyResp());
-        Mockito.verify(servletMock, times(3)).doDelete(Mockito.any(), Mockito.any());
-        assertTrue(checkLaunch);
+        VacancyAndContactServiceImpl simpleServiceMock = Mockito.mock();
+        VacancyAndContact vacancyAndContact = new VacancyAndContact();
+        vacancyAndContact.setVacancyId(UUID.randomUUID());
+        vacancyAndContact.setContactId(UUID.randomUUID());
+        Mockito.when(simpleServiceMock.delete(vacancyAndContact.getVacancyId(), vacancyAndContact.getContactId())).thenReturn(true);
+
+        VacancyAndContactServlet vacancyAndContactServlet = new VacancyAndContactServlet(simpleServiceMock);
+        vacancyAndContactServlet.doDelete(new MyReq(vacancyAndContact.getVacancyId(), vacancyAndContact.getContactId()),new MyResp());
+        Mockito.verify(simpleServiceMock).delete(Mockito.any(),Mockito.any());
+        assertTrue(true);
+
     }
 }

@@ -1,6 +1,7 @@
 package org.example.service.impl;
 
 import org.example.model.Event;
+import org.example.repository.impl.EventRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -21,7 +22,7 @@ class EventServiceImplTest {
 
     @Test
     void findByIdTest() {
-        EventServiceImpl simpleServiceMock = Mockito.mock();
+        EventRepositoryImpl simpleServiceMock = Mockito.mock();
         Event event = new Event();
         UUID id = UUID.randomUUID();
         event.setId(id);
@@ -31,11 +32,13 @@ class EventServiceImplTest {
         event.setIsCompleted(false);
         event.setVacancyId(UUID.fromString("0b705064-e5e4-4eb8-a78f-13aa462db6f2"));
         Mockito.when(simpleServiceMock.findById(id)).thenReturn(event);
-        assertEquals(event, simpleServiceMock.findById(id));
+        Event check = simpleServiceMock.findById(id);
+        EventServiceImpl eventService = new EventServiceImpl(simpleServiceMock);
+        assertEquals(check, eventService.findById(id));
     }
     @Test
     void saveTest() {
-        EventServiceImpl simpleServiceMock = Mockito.mock();
+        EventRepositoryImpl simpleServiceMock = Mockito.mock();
         Event event = new Event();
         UUID id = UUID.randomUUID();
         event.setId(id);
@@ -45,9 +48,11 @@ class EventServiceImplTest {
         event.setIsCompleted(false);
         event.setVacancyId(UUID.fromString("0b705064-e5e4-4eb8-a78f-13aa462db6f2"));
         Mockito.when(simpleServiceMock.save(event)).thenReturn(event);
-        assertEquals(event, simpleServiceMock.save(event));
+        Event check = simpleServiceMock.save(event);
+        EventServiceImpl eventService = new EventServiceImpl(simpleServiceMock);
+        assertEquals(check, eventService.save(event));
         ArgumentCaptor<Event> requestCaptor = ArgumentCaptor.forClass(Event.class);
-        Mockito.verify(simpleServiceMock, times(1)).save(requestCaptor.capture());
+        Mockito.verify(simpleServiceMock, times(2)).save(requestCaptor.capture());
         Event capturedArgument = requestCaptor.getValue();
         assertNotNull(capturedArgument.getId());
         assertNotNull(capturedArgument.getUserId());
@@ -55,19 +60,22 @@ class EventServiceImplTest {
         assertNotNull(capturedArgument.getVacancyId());
         assertNotNull(capturedArgument.getNotes());
         assertFalse(capturedArgument.getIsCompleted());
+
     }
 
     @Test
     void deleteTest() {
-        EventServiceImpl simpleServiceMock = Mockito.mock();
+        EventRepositoryImpl simpleServiceMock = Mockito.mock();
         UUID id = UUID.randomUUID();
-        Mockito.when(simpleServiceMock.delete(id)).thenReturn(true);
-        assertEquals(true, simpleServiceMock.delete(id));
+        Mockito.when(simpleServiceMock.deleteById(id)).thenReturn(true);
+        boolean check = simpleServiceMock.deleteById(id);
+        EventServiceImpl eventService = new EventServiceImpl(simpleServiceMock);
+        assertEquals(check, eventService.delete(id));
     }
 
     @Test
     void findAll() {
-        EventServiceImpl simpleServiceMock = Mockito.mock();
+        EventRepositoryImpl simpleServiceMock = Mockito.mock();
         List<Event> eventList = new ArrayList<>();
         Event event = new Event();
         UUID id = UUID.randomUUID();
@@ -89,6 +97,9 @@ class EventServiceImplTest {
         event2.setVacancyId(UUID.fromString("0b705064-e5e4-4eb8-a78f-13aa462db6f2"));
         eventList.add(event2);
         Mockito.when(simpleServiceMock.findAll()).thenReturn(eventList);
-        assertEquals(eventList, simpleServiceMock.findAll());
+
+        List<Event> check = simpleServiceMock.findAll();
+        EventServiceImpl eventService = new EventServiceImpl(simpleServiceMock);
+        assertEquals(check, eventService.findAll());
     }
 }

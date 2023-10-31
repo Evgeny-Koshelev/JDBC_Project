@@ -4,7 +4,7 @@ import org.example.model.Contact;
 import org.example.model.Event;
 import org.example.model.Status;
 import org.example.model.Vacancy;
-import org.junit.jupiter.api.Assertions;
+import org.example.repository.impl.StatusRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -14,8 +14,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 
 class StatusServiceImplTest {
@@ -24,7 +23,7 @@ class StatusServiceImplTest {
 
     @Test
     void findByIdTest() {
-        StatusServiceImpl simpleServiceMock = Mockito.mock();
+        StatusRepositoryImpl simpleServiceMock = Mockito.mock();
         Status status = new Status();
         status.setId(UUID.randomUUID());
         status.setUserId("fba9b929-a765-4e43-bb61-5c3bb47c5084");
@@ -64,11 +63,13 @@ class StatusServiceImplTest {
         status.setVacancies(vacancies);
 
         Mockito.when(simpleServiceMock.findById(status.getId())).thenReturn(status);
-        Assertions.assertEquals(status, simpleServiceMock.findById(status.getId()));
+        Status check = simpleServiceMock.findById(status.getId());
+        StatusServiceImpl statusService = new StatusServiceImpl(simpleServiceMock);
+        assertEquals(check, statusService.findById(status.getId()));
     }
     @Test
     void saveTest() {
-        StatusServiceImpl simpleServiceMock = Mockito.mock();
+        StatusRepositoryImpl simpleServiceMock = Mockito.mock();
         Status status = new Status();
         status.setId(UUID.randomUUID());
         status.setUserId("fba9b929-a765-4e43-bb61-5c3bb47c5084");
@@ -76,10 +77,12 @@ class StatusServiceImplTest {
         status.setOrderNum(5);
 
         Mockito.when(simpleServiceMock.save(status)).thenReturn(status);
-        Assertions.assertEquals(status, simpleServiceMock.save(status));
+        Status check = simpleServiceMock.save(status);
+        StatusServiceImpl statusService = new StatusServiceImpl(simpleServiceMock);
+        assertEquals(check, statusService.save(status));
 
         ArgumentCaptor<Status> requestCaptor = ArgumentCaptor.forClass(Status.class);
-        Mockito.verify(simpleServiceMock, times(1)).save(requestCaptor.capture());
+        Mockito.verify(simpleServiceMock, times(2)).save(requestCaptor.capture());
         Status capturedArgument = requestCaptor.getValue();
         assertNotNull(capturedArgument.getId());
         assertNotNull(capturedArgument.getUserId());
@@ -90,15 +93,18 @@ class StatusServiceImplTest {
 
     @Test
     void deleteTest() {
-        StatusServiceImpl simpleServiceMock = Mockito.mock();
+        StatusRepositoryImpl simpleServiceMock = Mockito.mock();
         UUID id = UUID.randomUUID();
-        Mockito.when(simpleServiceMock.delete(id)).thenReturn(true);
-        Assertions.assertEquals(true, simpleServiceMock.delete(id));
+        Mockito.when(simpleServiceMock.deleteById(id)).thenReturn(true);
+
+        boolean check = simpleServiceMock.deleteById(id);
+        StatusServiceImpl statusService = new StatusServiceImpl(simpleServiceMock);
+        assertEquals(check, statusService.delete(id));
     }
 
     @Test
     void findAll() {
-        StatusServiceImpl simpleServiceMock = Mockito.mock();
+        StatusRepositoryImpl simpleServiceMock = Mockito.mock();
         List<Status> statusList = new ArrayList<>();
         Status status = new Status();
         status.setId(UUID.randomUUID());
@@ -174,6 +180,9 @@ class StatusServiceImplTest {
         status.setVacancies(vacancyList);
         statusList.add(status);
         Mockito.when(simpleServiceMock.findAll()).thenReturn(statusList);
-        Assertions.assertEquals(statusList, simpleServiceMock.findAll());
+
+        List<Status> check = simpleServiceMock.findAll();
+        StatusServiceImpl statusService = new StatusServiceImpl(simpleServiceMock);
+        assertEquals(check, statusService.findAll());
     }
 }

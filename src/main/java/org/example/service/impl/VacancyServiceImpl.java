@@ -10,7 +10,12 @@ import java.util.UUID;
 
 public class VacancyServiceImpl implements SimpleService<Vacancy> {
 
-    private final VacancyRepository vacancyRepository = new VacancyRepositoryImpl();
+    private final VacancyRepository vacancyRepository;
+
+    public VacancyServiceImpl(VacancyRepositoryImpl vacancyRepository) {
+        this.vacancyRepository = vacancyRepository;
+
+    }
 
     @Override
     public Vacancy save(Vacancy vacancy) {

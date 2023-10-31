@@ -3,6 +3,7 @@ package org.example.servlet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.example.model.Event;
+import org.example.repository.impl.EventRepositoryImpl;
 import org.example.service.impl.EventServiceImpl;
 import org.example.servlet.dto.EventDto;
 import org.example.servlet.mapper.EventDtoMapperImpl;
@@ -25,22 +26,29 @@ import java.util.UUID;
 @WebServlet(name = "eventServlet", value = "/event")
 public class EventServlet extends HttpServlet {
 
-    private final EventServiceImpl service = new EventServiceImpl();
+    private final EventServiceImpl service;
     private final EventDtoMapperImpl eventDtoMapper = new EventDtoMapperImpl();
     private final DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault());
     private static final String CONTENT_TYPE = "application/json; charset=utf-8";
     private static final String DATE_TYPE = "yyyy-MM-dd HH:mm:ssXXX";
 
+    public EventServlet(EventServiceImpl eventService) {
+        service = eventService;
+
+    }
+
+    public EventServlet() {
+        service = new EventServiceImpl(new EventRepositoryImpl());
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         ObjectMapper objectMapper = createObject();
-        resp.setContentType(CONTENT_TYPE);
         String json;
         if(req.getParameter("id") != null) {
             UUID uuid = UUID.fromString(req.getParameter("id"));
             Event event = service.findById(uuid);
-            PrintWriter pw = resp.getWriter();
             if(event!=null) {
                 EventDto eventDto = eventDtoMapper.toDto(event);
                 json = objectMapper.writeValueAsString(eventDto);
@@ -52,7 +60,11 @@ public class EventServlet extends HttpServlet {
 
 
             }
-            pw.write(json);
+            if(resp.getWriter()!=null) {
+                resp.setContentType(CONTENT_TYPE);
+                PrintWriter pw = resp.getWriter();
+                pw.write(json);
+            }
         }
         else
             getAll(resp, objectMapper);
@@ -62,7 +74,6 @@ public class EventServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ObjectMapper objectMapper = createObject();
         String json;
-        resp.setContentType(CONTENT_TYPE);
         if(req.getParameter("notes")!=null) {
             EventDto eventDtoIn = new EventDto();
             String str = req.getParameter("beginDate");
@@ -84,8 +95,11 @@ public class EventServlet extends HttpServlet {
             json = objectMapper.writeValueAsString("Notes is empty");
         }
 
-        PrintWriter pw = resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+            resp.setContentType(CONTENT_TYPE);
+            PrintWriter pw = resp.getWriter();
+            pw.write(json);
+        }
     }
 
     @Override
@@ -99,9 +113,11 @@ public class EventServlet extends HttpServlet {
             resp.setStatus(404);
             json = objectMapper.writeValueAsString("Such id don't found");
         }
-        resp.setContentType(CONTENT_TYPE);
-        PrintWriter pw= resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+            resp.setContentType(CONTENT_TYPE);
+            PrintWriter pw = resp.getWriter();
+            pw.write(json);
+        }
     }
 
     protected void getAll(HttpServletResponse resp, ObjectMapper objectMapper)
@@ -120,8 +136,11 @@ public class EventServlet extends HttpServlet {
             resp.setStatus(404);
             json = objectMapper.writeValueAsString("List is empty");
         }
-        PrintWriter pw= resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+            resp.setContentType(CONTENT_TYPE);
+            PrintWriter pw = resp.getWriter();
+            pw.write(json);
+        }
     }
 
     private ObjectMapper createObject() {

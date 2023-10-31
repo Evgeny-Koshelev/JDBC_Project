@@ -3,6 +3,7 @@ package org.example.servlet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.example.model.Vacancy;
+import org.example.repository.impl.VacancyRepositoryImpl;
 import org.example.service.impl.VacancyServiceImpl;
 import org.example.servlet.dto.VacancyDto;
 import org.example.servlet.mapper.VacancyDtoMapperImpl;
@@ -20,14 +21,21 @@ import java.util.UUID;
 
 @WebServlet(name = "vacancyServlet", value = "/vacancy")
 public class VacancyServlet extends HttpServlet {
-    private final VacancyServiceImpl service = new VacancyServiceImpl();
+    private final VacancyServiceImpl service;
     private final VacancyDtoMapperImpl vacancyDtoMapper = new VacancyDtoMapperImpl();
     private static final String CONTENT_TYPE = "application/json; charset=utf-8";
     private static final String DATE_TYPE = "yyyy-MM-dd HH:mm:ssXXX";
 
+    public VacancyServlet(VacancyServiceImpl vacancyService) {
+        service = vacancyService;
+    }
+
+    public VacancyServlet() {
+        service = new VacancyServiceImpl(new VacancyRepositoryImpl());
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType(CONTENT_TYPE);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.setDateFormat(new SimpleDateFormat(DATE_TYPE));
@@ -45,8 +53,11 @@ public class VacancyServlet extends HttpServlet {
                 json = objectMapper.writeValueAsString("Such id don't found");
 
             }
-            PrintWriter pw = resp.getWriter();
-            pw.write(json);
+            if(resp.getWriter()!=null) {
+                resp.setContentType(CONTENT_TYPE);
+                PrintWriter pw = resp.getWriter();
+                pw.write(json);
+            }
         }
         else
             getAll(resp, objectMapper);
@@ -59,7 +70,6 @@ public class VacancyServlet extends HttpServlet {
         objectMapper.setDateFormat(new SimpleDateFormat(DATE_TYPE));
         String json;
         req.setCharacterEncoding("UTF-8");
-        resp.setContentType(DATE_TYPE);
         if(req.getParameter("nameVacancy")!= null && req.getParameter("notes") != null) {
             VacancyDto vacancyDtoIn = new VacancyDto();
             UUID id = UUID.randomUUID();
@@ -80,8 +90,11 @@ public class VacancyServlet extends HttpServlet {
             resp.setStatus(404);
             json = objectMapper.writeValueAsString("Notes or name_vacancy is empty");
         }
-        PrintWriter pw = resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+            resp.setContentType(CONTENT_TYPE);
+            PrintWriter pw = resp.getWriter();
+            pw.write(json);
+        }
     }
 
     @Override
@@ -95,9 +108,11 @@ public class VacancyServlet extends HttpServlet {
             resp.setStatus(404);
             json = objectMapper.writeValueAsString("Such id don't found");
         }
-        resp.setContentType(CONTENT_TYPE);
-        PrintWriter pw= resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+            resp.setContentType(CONTENT_TYPE);
+            PrintWriter pw = resp.getWriter();
+            pw.write(json);
+        }
     }
 
     protected void getAll(HttpServletResponse resp, ObjectMapper objectMapper)
@@ -115,8 +130,11 @@ public class VacancyServlet extends HttpServlet {
             resp.setStatus(404);
             json = objectMapper.writeValueAsString("List is empty");
         }
-        PrintWriter pw= resp.getWriter();
-        pw.write(json);
+        if(resp.getWriter()!=null) {
+            resp.setContentType(CONTENT_TYPE);
+            PrintWriter pw = resp.getWriter();
+            pw.write(json);
+        }
     }
 }
 
